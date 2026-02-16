@@ -1,0 +1,66 @@
+--Zadanie 7.1
+
+SELECT
+    Pomiary.kod_obszaru,
+    MAX(ilosc)
+FROM
+    Obszary
+    INNER JOIN Pomiary ON Pomiary.kod_obszaru = Obszary.kod_obszaru
+WHERE
+    glebokosc < 100
+GROUP BY
+    Pomiary.kod_obszaru;
+
+
+
+
+ODP:
+kod_obszaru	nazwa_obszaru
+MC-01	        Mare Boreum
+
+
+
+
+
+
+
+
+--Zadanie 7.2
+
+SELECT
+    Pomiary.nr_lazika,
+    Laziki.nazwa_lazika,
+    COUNT(Pomiary.data_pomiaru) AS [ilosc pomiarow],
+    MIN(Pomiary.data_pomiaru) AS [pierwszy pomiar],
+    MAX(Pomiary.data_pomiaru) AS [ostatni pomiar]
+FROM
+    Pomiary
+    INNER JOIN Laziki ON Pomiary.nr_lazika = Laziki.nr_lazika
+GROUP BY
+    Pomiary.nr_lazika,
+    Laziki.nazwa_lazika
+ORDER BY
+    COUNT(Pomiary.data_pomiaru) DESC
+
+
+
+ODP:
+nr_lazika   nazwa_lazika   ilosc pomiarow   pierwszy pomiar   ostatni pomiar
+47	    Spirit 14     145	            29.08.2066        25.07.2076
+
+
+
+
+
+
+--Zadanie 7.3 //nie dokonczony
+
+SELECT
+Obszary.nazwa_obszaru
+FROM
+    (Obszary
+    INNER JOIN Pomiary ON Pomiary.kod_obszaru = Obszary.kod_obszaru)
+     INNER JOIN Laziki ON Pomiary.nr_lazika = Laziki.nr_lazika
+     GROUP BY  Obszary.nazwa_obszaru
+     HAVING Year(Pomiary.data_pomiaru) - Laziki.rok_wyslania <> 0
+     
