@@ -1,0 +1,68 @@
+
+
+//Zadanie 7.2
+
+nazwa			srednia
+
+5 sekund	        8,16
+Avalone			8,25
+Colt Express	        7,54
+Jenga			8,16
+Koncept			8,37
+Mamy szpiega	        8,22
+Przebiegle wielblady	7,73
+Sushi Go		8,07
+Swiatowy Konflikt	7,8
+Szeryf z Nottingham	7,88
+
+//Zadanie 7.3
+SELECT
+
+COUNT(oceny.ocena),
+oceny.stan
+FROM 
+oceny INNER JOIN gracze ON oceny.id_gracza = gracze.id_gracza
+GROUP BY  gracze.id_gracza
+HAVING COUNT(oceny.ocena) > 0 AND oceny.stan <> "posiada";
+
+
+//Zadanie 7.4
+
+ (SELECT
+     COUNT(oceny.ocena),
+     gry.nazwa, "juniorzy" AS [grupa wiekowa]
+     FROM (oceny INNER JOIN gracze ON gracze.id_gracza = oceny.id_gracza)
+     INNER JOIN gry ON oceny.id_gry = gry.id_gry
+     WHERE gracze.wiek < 20
+ GROUP BY gry.nazwa) 
+      UNION
+        (SELECT
+         COUNT(oceny.ocena),
+         gry.nazwa, "seniorzy" AS [grupa wiekowa] 
+         FROM (oceny INNER JOIN gracze ON gracze.id_gracza = oceny.id_gracza)
+         INNER JOIN gry ON oceny.id_gry = gry.id_gry
+         WHERE gracze.wiek  > 19 AND gracze.wiek  < 50
+ GROUP BY gry.nazwa  )
+          UNION
+            (SELECT
+             COUNT(oceny.ocena),
+             gry.nazwa, "veterani" AS [grupa wiekowa] 
+             FROM (oceny INNER JOIN gracze ON gracze.id_gracza = oceny.id_gracza)
+             INNER JOIN gry ON oceny.id_gry = gry.id_gry
+              WHERE gracze.wiek  > 50 
+ GROUP BY gry.nazwa) 
+
+
+
+
+
+
+
+----Zadanie 7.5
+
+SELECT SUM(cena)
+FROM Gry
+INNER JOIN Sklep ON Gry.id_gry = Sklep.id_gry
+WHERE Gry.kategoria = "logiczna" and Sklep.promocja = true;
+
+
